@@ -25,7 +25,7 @@ extension SingleValueDecodingContainer {
 
 extension SingleValueEncodingContainer {
     /// 解析单个value
-    mutating func encodeAny(_ value: Any) throws {
+    mutating func encodeAny(_ value: Any?) throws {
         switch value {
         case let value as Bool:
             try encode(value)
@@ -38,7 +38,7 @@ extension SingleValueEncodingContainer {
         case Optional<Any>.none:
             try encodeNil()
         default:
-            throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: codingPath, debugDescription: "Invalid JSON value"))
+            throw EncodingError.invalidValue(String(describing: value), EncodingError.Context(codingPath: codingPath, debugDescription: "Invalid JSON value"))
         }
     }
 }

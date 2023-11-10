@@ -48,16 +48,6 @@ extension KeyedEncodingContainerProtocol where Key == JSONCodingKeys {
     }
     
     /// 解析任意类型
-    mutating func encodeAny(_ value: Any) throws {
-        switch value {
-        case let value as [String: Any]:
-            try encode(value)
-        default:
-            throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: codingPath, debugDescription: "Invalid JSON value"))
-        }
-    }
-    
-    /// 解析任意类型
     mutating func encodeAny(_ value: Any, forKey key: Key) throws {
         var container = self.nestedUnkeyedContainer(forKey: key)
         return try container.encodeAny(value)
@@ -72,12 +62,12 @@ extension UnkeyedEncodingContainer {
         })
     }
     
-    mutating func encode(_ value: [String: Any]) throws {
+    mutating func encode(_ dict: [String: Any]) throws {
         var nestedContainer = self.nestedContainer(keyedBy: JSONCodingKeys.self)
-        try nestedContainer.encode(value)
+        try nestedContainer.encode(dict)
     }
     
-    mutating func encodeAny(_ value: Any) throws {
+    mutating func encodeAny(_ value: Any?) throws {
         switch value {
         case let value as Bool:
             try encode(value)
@@ -94,7 +84,7 @@ extension UnkeyedEncodingContainer {
         case Optional<Any>.none:
             try encodeNil()
         default:
-            throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: codingPath, debugDescription: "Invalid JSON value"))
+            throw EncodingError.invalidValue(String(describing: value), EncodingError.Context(codingPath: codingPath, debugDescription: "Invalid JSON value"))
         }
     }
 }

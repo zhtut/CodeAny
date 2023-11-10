@@ -11,7 +11,7 @@
 }]
 ```
 
-## 用法
+## 集成
 
 ### swift package manager
 
@@ -25,7 +25,12 @@
 pod 'CodeAny'
 ```
 
+## 使用
+
+### 在不确定的类型属性，加上一个属性包装@AnyType，并且类型修改为Any
+
 ```swift
+import CodeAny
 struct Person: Codable {
     var name: String
     @AnyType // 在不确定的类型属性，加上一个包装
@@ -33,7 +38,7 @@ struct Person: Codable {
 }
 ```
 
-解析的方法还是一样
+### 解析的方法还是一样
 ```swift
 let jsons = [
             [
@@ -86,4 +91,6 @@ let jsons = [
         print("转换回json：\(string ?? "")")
 ```
 
-### optional的 暂不支持
+### optional的需要使用OptionalAnyType
+
+### 详细查看Tests测试用例使用
