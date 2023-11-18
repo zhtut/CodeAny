@@ -32,6 +32,7 @@ public final class AnyType: Codable {
     }
     
     public func encode(to encoder: Encoder) throws {
+        var wrappedValue = wrappedValue
         if let codeValue = wrappedValue as? Encodable {
             let data = try JSONEncoder().encode(codeValue)
             wrappedValue = try JSONSerialization.jsonObject(with: data)

@@ -24,9 +24,7 @@ final class CodeAnyTests: XCTestCase {
             return
         }
         XCTAssert(size == 10)
-        
-        // decode
-        let person2 = try JSONDecoder().decode(Person.self, from: <#T##Data#>)
+        print("like\(person.like)")
     }
     
     func testExample() async throws {
