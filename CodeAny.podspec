@@ -2,7 +2,7 @@
 Pod::Spec.new do |s| 
 
   s.name         = "CodeAny"
-  s.version      = "0.2.0"
+  s.version      = "0.3.0"
   s.summary      = " swift codable 支持泛型类型 "
 
   s.description  = <<-DESC

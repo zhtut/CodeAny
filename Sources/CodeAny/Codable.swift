@@ -27,7 +27,15 @@ struct JSONCodingKeys: CodingKey {
 public final class AnyType: Codable {
     public var wrappedValue: Any
     
+    public init(wrappedValue: Any) {
+        self.wrappedValue = wrappedValue
+    }
+    
     public func encode(to encoder: Encoder) throws {
+        if let codeValue = wrappedValue as? Encodable {
+            let data = try JSONEncoder().encode(codeValue)
+            wrappedValue = try JSONSerialization.jsonObject(with: data)
+        }
         do {
             var single = encoder.singleValueContainer()
             try single.encodeAny(wrappedValue)
@@ -61,6 +69,10 @@ public final class AnyType: Codable {
 @propertyWrapper
 public final class OptionalAnyType: Codable {
     public var wrappedValue: Any?
+    
+    public init(wrappedValue: Any?) {
+        self.wrappedValue = wrappedValue
+    }
     
     public func encode(to encoder: Encoder) throws {
         do {

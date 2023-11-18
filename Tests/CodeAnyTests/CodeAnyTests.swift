@@ -3,10 +3,30 @@ import XCTest
 
 final class CodeAnyTests: XCTestCase {
     
+    struct Boll: Codable {
+        var size: Int
+    }
+    
     struct Person: Codable {
         var name: String
         @AnyType
         var like: Any
+    }
+    
+    func testEncodeModel() async throws {
+        let person = Person(name: "hahaha", like: Boll(size: 10))
+        let data = try JSONEncoder().encode(person)
+        let json = try JSONSerialization.jsonObject(with: data)
+        guard let dict = json as? [String: Any],
+              let boll = dict["like"] as? [String: Any],
+              let size = boll["size"] as? Int else {
+            XCTAssert(false)
+            return
+        }
+        XCTAssert(size == 10)
+        
+        // decode
+        let person2 = try JSONDecoder().decode(Person.self, from: <#T##Data#>)
     }
     
     func testExample() async throws {
