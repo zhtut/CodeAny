@@ -32,8 +32,9 @@ public final class AnyType: Codable {
     }
     
     public func encode(to encoder: Encoder) throws {
-        var wrappedValue = wrappedValue
-        if let codeValue = wrappedValue as? Encodable {
+        // 如果是json字符串，需要先解成对应的字典或者数组，再去encode
+        if let codeValue = wrappedValue as? Encodable,
+           JSONSerialization.isValidJSONObject(wrappedValue) {
             let data = try JSONEncoder().encode(codeValue)
             wrappedValue = try JSONSerialization.jsonObject(with: data)
         }
@@ -76,6 +77,12 @@ public final class OptionalAnyType: Codable {
     }
     
     public func encode(to encoder: Encoder) throws {
+        // 如果是json字符串，需要先解成对应的字典或者数组，再去encode
+        if let codeValue = wrappedValue as? Encodable,
+           JSONSerialization.isValidJSONObject(wrappedValue) {
+            let data = try JSONEncoder().encode(codeValue)
+            wrappedValue = try JSONSerialization.jsonObject(with: data)
+        }
         do {
             var single = encoder.singleValueContainer()
             try single.encodeAny(wrappedValue)
